@@ -1,7 +1,7 @@
 import PubSub from 'pubsub-js'
 import React, { Component } from 'react'
 import Webcam from 'react-webcam'
-import useParams from "react-router-dom";
+import ScreenshootPreview from './ScreenshootPreview'
 
 export default class WebcamCapture extends Component {
     constructor(props) {
@@ -12,6 +12,7 @@ export default class WebcamCapture extends Component {
         }
 
         this._webcam = React.createRef()
+        this._screenshootPreview = React.createRef()
     }
 
     render() {
@@ -22,6 +23,7 @@ export default class WebcamCapture extends Component {
                     deviceId: this.state.deviceId,
                     forceScreenshotSourceSize: true
                 }} />
+                <ScreenshootPreview ref={this._screenshootPreview} />
             </div>
         )
     }
@@ -33,14 +35,16 @@ export default class WebcamCapture extends Component {
     }
 
     subscribeSnapshot(msg, data) {
-        if (msg == "") {
+        if (msg === "") {
             return
         }
         
         let currentSnaps = this.state.screenshoots;
-        currentSnaps.push(this._webcam.current.getScreenshot());
+        let snapshot = this._webcam.current.getScreenshot();
+        currentSnaps.push(snapshot);
 
         this.setState({screenshoots : currentSnaps})
+        this._screenshootPreview.current.addScreenshoot(snapshot)
     }
 
     componentDidMount() {
