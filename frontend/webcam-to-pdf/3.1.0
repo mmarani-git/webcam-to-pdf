@@ -1,0 +1,22 @@
+
+> fibers@5.0.0 install C:\Users\marco\workspaces\private\bitbucket\webcam-to-pdf\frontend\webcam-to-pdf\node_modules\fibers
+> node build.js || nodejs build.js
+
+
+C:\Users\marco\workspaces\private\bitbucket\webcam-to-pdf\frontend\webcam-to-pdf\node_modules\fibers>if not defined npm_config_node_gyp (node "C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin\\..\..\node_modules\node-gyp\bin\node-gyp.js" rebuild --release )  else (node "C:\Program Files\nodejs\node_modules\npm\node_modules\node-gyp\bin\node-gyp.js" rebuild --release ) 
+Building the projects in this solution one at a time. To enable parallel build, please add the "/m" switch.
+  fibers.cc
+  coroutine.cc
+  win_delay_load_hook.cc
+c:\users\marco\workspaces\private\bitbucket\webcam-to-pdf\frontend\webcam-to-pdf\node_modules\fibers\src\coroutine.cc(153): warning C4552: '!': result of expression not used [C:\Users\marco\workspaces\private\bitbucket\webcam-to-pdf\frontend\webcam-to-pdf\node_modules\fibers\build\fibers.vcxproj]
+  coro.c
+     Creating library C:\Users\marco\workspaces\private\bitbucket\webcam-to-pdf\frontend\webcam-to-pdf\node_modules\fibers\build\Release\fibers.lib and object C:\Users\marco\workspaces\private\bitbucket\webcam-to-pdf\frontend\webcam-to-pdf\node_modules\fibers\build\Release\fibers.exp
+  Generating code
+  All 753 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  fibers.vcxproj -> C:\Users\marco\workspaces\private\bitbucket\webcam-to-pdf\frontend\webcam-to-pdf\node_modules\fibers\build\Release\\fibers.node
+Installed in `C:\Users\marco\workspaces\private\bitbucket\webcam-to-pdf\frontend\webcam-to-pdf\node_modules\fibers\bin\win32-x64-64\fibers.node`
++ fibers@5.0.0
+added 2 packages from 3 contributors and audited 1746 packages in 16.468s
+found 1 low severity vulnerability
+  run `npm audit fix` to fix them, or `npm audit` for details
