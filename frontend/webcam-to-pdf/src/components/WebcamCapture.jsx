@@ -8,8 +8,7 @@ export default class WebcamCapture extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            deviceId: this.props.match.params.deviceId,
-            screenshoots: []
+            deviceId: this.props.match.params.deviceId
         }
 
         this._processing=false;
@@ -46,12 +45,7 @@ export default class WebcamCapture extends Component {
         }
         
         this._processing = true;
-        let currentSnaps = this.state.screenshoots;
-        let snapshot = this._webcam.current.getScreenshot();
-        currentSnaps.push(snapshot);
-
-        this.setState({screenshoots : currentSnaps})
-        this._screenshootBar.current.addScreenshoot(snapshot)
+        this._screenshootBar.current.addScreenshoot(this._webcam.current.getScreenshot())
         this._processing = false;
     }
 
