@@ -1,0 +1,17 @@
+.inline {
+    display: inline-block;
+}
+
+.outer {
+    width: 100%;
+    padding: 2px
+}
+
+.inner {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.width100 {
+    width: 100%;   
+}
