@@ -1,11 +1,4 @@
-.autoScroll {
-    overflow-x: scroll;
-    overflow-y: hidden;
-    white-space: nowrap;
-    display: inline-block;
-  }
-
-.autoFlex {
+.scrollX {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;

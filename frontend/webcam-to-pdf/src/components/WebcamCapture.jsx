@@ -20,7 +20,6 @@ export default class WebcamCapture extends Component {
     render() {
         return (
             <div>
-                <p>Screenshoots: {this.state.screenshoots.length}</p>    
                 <Webcam id="webcam" 
                     ref={this._webcam} 
                     forceScreenshotSourceSize="true"

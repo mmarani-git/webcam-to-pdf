@@ -11,8 +11,10 @@ export default class ScreenshootBar extends Component {
     }
 
     render() {
-        return (<div><div className="autoFlex">
-            {this.state.screenshoots.map(screenshoot => <ScreenshootPreview src={screenshoot} />)}
+        return (<div><div className="scrollX">
+            {this.state.screenshoots.map(
+                (screenshoot, index) => <ScreenshootPreview src={screenshoot} index={index} />
+            )}
         </div></div>)
     }
 
