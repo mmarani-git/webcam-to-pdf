@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import Webcam from 'react-webcam'
 import ScreenshootPreview from './ScreenshootPreview'
 import './WebcamCapture.css'
+import ImageService from '../services/ImageService.js'
 
 export default class WebcamCapture extends Component {
     constructor(props) {
@@ -20,9 +21,14 @@ export default class WebcamCapture extends Component {
         return (
             <div>
                 <p>Screenshoots: {this.state.screenshoots.length}</p>    
-                <Webcam id="webcam" ref={this._webcam} forceScreenshotSourceSize="true" audio={false} videoConstraints={{
-                    deviceId: this.state.deviceId,
-                    width: 3264, height: 2448
+                <Webcam id="webcam" 
+                    ref={this._webcam} 
+                    forceScreenshotSourceSize="true"
+                     audio={false} 
+                     videoConstraints={{
+                        deviceId: this.state.deviceId,
+                        width: {ideal: 10000}, 
+                        height: {ideal: 10000}
                 }} />
                 <ScreenshootPreview ref={this._screenshootPreview} />
             </div>
