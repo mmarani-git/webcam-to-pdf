@@ -2,6 +2,7 @@ import PubSub from 'pubsub-js'
 import React, { Component } from 'react'
 import Webcam from 'react-webcam'
 import ScreenshootPreview from './ScreenshootPreview'
+import './WebcamCapture.css'
 
 export default class WebcamCapture extends Component {
     constructor(props) {
@@ -19,9 +20,9 @@ export default class WebcamCapture extends Component {
         return (
             <div>
                 <p>Screenshoots: {this.state.screenshoots.length}</p>    
-                <Webcam ref={this._webcam} audio={false} videoConstraints={{
+                <Webcam id="webcam" ref={this._webcam} forceScreenshotSourceSize="true" audio={false} videoConstraints={{
                     deviceId: this.state.deviceId,
-                    forceScreenshotSourceSize: true
+                    width: 3264, height: 2448
                 }} />
                 <ScreenshootPreview ref={this._screenshootPreview} />
             </div>
