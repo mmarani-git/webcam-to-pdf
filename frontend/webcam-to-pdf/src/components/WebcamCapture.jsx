@@ -1,9 +1,8 @@
 import PubSub from 'pubsub-js'
 import React, { Component } from 'react'
 import Webcam from 'react-webcam'
-import ScreenshootPreview from './ScreenshootPreview'
+import ScreenshootBar from './ScreenshootBar'
 import './WebcamCapture.css'
-import ImageService from '../services/ImageService.js'
 
 export default class WebcamCapture extends Component {
     constructor(props) {
@@ -13,8 +12,9 @@ export default class WebcamCapture extends Component {
             screenshoots: []
         }
 
+        this._processing=false;
         this._webcam = React.createRef()
-        this._screenshootPreview = React.createRef()
+        this._screenshootBar = React.createRef()
     }
 
     render() {
@@ -30,13 +30,13 @@ export default class WebcamCapture extends Component {
                         width: {ideal: 10000}, 
                         height: {ideal: 10000}
                 }} />
-                <ScreenshootPreview ref={this._screenshootPreview} />
+                <ScreenshootBar ref={this._screenshootBar} />
             </div>
         )
     }
 
     _keyPressed(event) {
-        if (event.keyCode === 32) {
+        if (event.keyCode === 32 && !this._processing) {
             PubSub.publish("snapshot")
         }
     }
@@ -46,12 +46,14 @@ export default class WebcamCapture extends Component {
             return
         }
         
+        this._processing = true;
         let currentSnaps = this.state.screenshoots;
         let snapshot = this._webcam.current.getScreenshot();
         currentSnaps.push(snapshot);
 
         this.setState({screenshoots : currentSnaps})
-        this._screenshootPreview.current.addScreenshoot(snapshot)
+        this._screenshootBar.current.addScreenshoot(snapshot)
+        this._processing = false;
     }
 
     componentDidMount() {

@@ -1,28 +1,19 @@
 import React, { Component } from 'react'
-import './ScreenShootPreview.css'
+import ImageService from '../services/ImageService.js'
+
+const PREVIEW_HEIGHT=120;
 
 export default class ScreenshootPreview extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            screenshoots: []
+            src: this.props.src
         }
     }
 
     render() {
-        return (<div><div className="autoFlex">
-            {this.state.screenshoots.map(screenshoot => <img width="160" height="120" src={screenshoot} />)}
-        </div></div>)
-    }
-
-    addScreenshoot(screenshoot) {
-        let currentSnaps = this.state.screenshoots.slice(0);
-        /*
-        if (currentSnaps.length > 5) {
-            currentSnaps.shift();
-        }
-        */
-        currentSnaps.push(screenshoot);
-        this.setState({ screenshoots: currentSnaps });
+        return (
+            <img width={ImageService.getWidthFromNewHeight(this.state.src,PREVIEW_HEIGHT)} height={PREVIEW_HEIGHT} src={this.state.src} />
+        )
     }
 }
