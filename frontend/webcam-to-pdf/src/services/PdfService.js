@@ -3,7 +3,7 @@ import axios from 'axios'
 
 class PdfService {
     savePdf(images,fileName) {
-        return axios.post(ServiceConstants.BASE_URL+"pdf",{images:images, fileName:fileName} );
+        return axios.post(ServiceConstants.BASE_URL+"pdf/create",{images:images, fileName:fileName} );
     }
 }
 
