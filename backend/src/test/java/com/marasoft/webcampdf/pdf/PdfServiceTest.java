@@ -1,4 +1,4 @@
-package com.marasoft.webcampdf;
+package com.marasoft.webcampdf.pdf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,6 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.marasoft.webcampdf.configuration.WorkDir;
+import com.marasoft.webcampdf.pdf.PdfException;
+import com.marasoft.webcampdf.pdf.PdfService;
 
 @SpringBootTest
 public class PdfServiceTest {

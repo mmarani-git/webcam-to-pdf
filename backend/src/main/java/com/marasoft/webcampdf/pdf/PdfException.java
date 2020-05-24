@@ -1,4 +1,4 @@
-package com.marasoft.webcampdf;
+package com.marasoft.webcampdf.pdf;
 
 public class PdfException extends Exception {
 
