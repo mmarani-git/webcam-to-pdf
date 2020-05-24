@@ -53,7 +53,7 @@ export default class SaveDialog extends Component {
     }
 
     _publish = () => {
-        PubSub.publish(WCEvents.SAVE, this.state[this.K_FILENAME])
+        PubSub.publish(WCEvents.SAVE, {fileName : this.state[this.K_FILENAME] })
     }
 
     handleValueChanged = (event) => {

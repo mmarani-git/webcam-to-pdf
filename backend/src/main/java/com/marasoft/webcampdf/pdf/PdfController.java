@@ -1,10 +1,11 @@
 package com.marasoft.webcampdf.pdf;
 
-import java.util.List;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,7 +17,7 @@ public class PdfController {
 	private PdfService pdfService;
 	
 	@RequestMapping(value = "/create", method=RequestMethod.POST)
-	public void createPdf(List<String> pagesBase64, String fileName) throws PdfException {
-		pdfService.createPdf(pagesBase64,fileName);
+	public void createPdf(@RequestParam String[] pagesBase64,@RequestParam String fileName) throws PdfException {
+		pdfService.createPdf(Arrays.asList(pagesBase64),fileName);
 	}
 }

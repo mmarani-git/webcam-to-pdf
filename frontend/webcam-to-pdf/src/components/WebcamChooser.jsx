@@ -23,9 +23,7 @@ export default class WebcamChooser extends Component {
         return (
             <>
             { this.state.devices.map((device, key) => (
-                <div>
                   <WebcamRow device={device} key={key} />
-                </div>
               )) }
             </>
         )

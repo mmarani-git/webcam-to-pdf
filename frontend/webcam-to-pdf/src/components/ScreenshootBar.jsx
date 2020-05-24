@@ -3,13 +3,13 @@ import './ScreenshootBar.css'
 import ScreenshootPreview from './ScreenshootPreview'
 import { WCEvents } from '../misc/WCEvents.js'
 import PubSub from 'pubsub-js'
+import PdfService from '../services/PdfService.js'
 
 export default class ScreenshootBar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            screenshoots: [],
-            showSaveWindow: false
+            screenshoots: []
         }
     }
 
@@ -30,7 +30,10 @@ export default class ScreenshootBar extends Component {
 
     componentDidMount() {
         PubSub.subscribe(WCEvents.SCREENSHOOT_DELETED, this.subscribeSnapshotDeleted.bind(this));
+        PubSub.subscribe(WCEvents.SAVE, this.subscribeSave.bind(this));
+
         this.subscribeSnapshotDeleted("", "")
+        this.subscribeSave("", "")
     }
 
     getScreenshoots = () => {
@@ -51,5 +54,17 @@ export default class ScreenshootBar extends Component {
         const nullStatus = [];
         this.setState({screenshoots : nullStatus});
         this.setState({screenshoots : currentSnaps});
+    }
+
+    subscribeSave(msg,data) {
+        if (msg==="" || data.fileName==="") {
+            return;
+        }
+
+        PdfService.savePdf(this.state.screenshoots, data.fileName).then(this.reset())
+    }
+
+    reset = () => {
+        this.setState({screenshoots : []})
     }
 }

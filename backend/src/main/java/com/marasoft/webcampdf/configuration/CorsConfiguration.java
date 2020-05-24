@@ -29,7 +29,7 @@ public class CorsConfiguration implements WebMvcConfigurer {
 				CorsRegistration reg = registry.addMapping("/**");
 				for(String url: allowedCors.split(",")) {
 				    reg.allowedOrigins(url).allowedMethods("GET", "POST","PUT", "DELETE");
-				    logger.debug("CorsConfiguration added route:"+url);
+				    logger.info("CorsConfiguration added route:"+url);
 				}
 			} catch (Exception e) {
 				logger.error("Error setting cors! check your cors.allowed property");
