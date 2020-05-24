@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,8 @@ import com.marasoft.webcampdf.configuration.WorkDir;
 
 @Component
 public class PdfService {
-
+	private static final Logger logger = LoggerFactory.getLogger(PdfService.class);
+	
 	@Autowired
 	private WorkDir workDir;
 
@@ -36,6 +39,7 @@ public class PdfService {
 	}
 
 	private File createPdf(List<Image> awtImages, File outputFile) throws PdfException {
+		logger.info("Creating document "+outputFile);
 		Document document = initializeDocument(outputFile);
 
 		document.open();
@@ -43,7 +47,7 @@ public class PdfService {
 			addImageAsPage(document, awtImage);
 		}
 		document.close();
-		
+		logger.info("Document created");
 		return outputFile;
 	}
 
@@ -53,7 +57,7 @@ public class PdfService {
 			com.itextpdf.text.Image image = com.itextpdf.text.Image.getInstance(awtImage, Color.WHITE);
 			image.setAbsolutePosition(0, 0);
 			image.setBorderWidth(0);
-			image.scaleAbsolute(PageSize.A4);
+			image.scaleToFit(PageSize.A4);
 			document.add(image);
 		} catch (Exception e) {
 			throw new PdfException(e);
