@@ -1,7 +1,9 @@
 package com.marasoft.webcampdf.configuration;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +24,14 @@ public class WorkDir {
 
 	private synchronized void initTempDir() {
 		tempDir = new File(workDir,"temp");
-		
-		if (!tempDir.exists()) {
-			tempDir.mkdirs();
+		if (tempDir.exists()) {
+			try {
+				FileUtils.deleteDirectory(tempDir);
+			} catch (IOException e) {
+				throw new IllegalArgumentException(tempDir+" is not a valid directory");
+			}
 		}
+		tempDir.mkdirs();
 	}
 
 	public synchronized File getTempDir() {

@@ -1,6 +1,6 @@
 package com.marasoft.webcampdf.pdf.service;
 
-public class PdfException extends Exception {
+public class PdfException extends RuntimeException {
 
 	/**
 	 * 
