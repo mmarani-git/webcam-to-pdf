@@ -8,7 +8,8 @@ export default class ScreenshootBar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            screenshoots: []
+            screenshoots: [],
+            showSaveWindow: false
         }
     }
 
@@ -32,6 +33,10 @@ export default class ScreenshootBar extends Component {
         this.subscribeSnapshotDeleted("", "")
     }
 
+    getScreenshoots = () => {
+        return this.state.screenshoots.slice()
+    }
+
     subscribeSnapshotDeleted(msg,data) {
         if (msg==="") {
             return;
@@ -43,7 +48,7 @@ export default class ScreenshootBar extends Component {
         Workaround, probably something is wrong with my key in the map above.
         https://github.com/facebook/react/issues/16964
         */
-        const nullStatus = Array();
+        const nullStatus = [];
         this.setState({screenshoots : nullStatus});
         this.setState({screenshoots : currentSnaps});
     }

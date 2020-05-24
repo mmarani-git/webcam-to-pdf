@@ -4,12 +4,14 @@ import Webcam from 'react-webcam'
 import ScreenshootBar from './ScreenshootBar'
 import './WebcamCapture.css'
 import { WCEvents } from '../misc/WCEvents.js'
+import SaveDialog from './SaveDialog.jsx'
 
 export default class WebcamCapture extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            deviceId: this.props.match.params.deviceId
+            deviceId: this.props.match.params.deviceId,
+            showSaveDialog: false
         }
 
         this._processing=false;
@@ -20,6 +22,7 @@ export default class WebcamCapture extends Component {
     render() {
         return (
             <div>
+                <SaveDialog show={this.state.showSaveDialog} />
                 <Webcam id="webcam" 
                     ref={this._webcam} 
                     forceScreenshotSourceSize="true"
@@ -35,8 +38,14 @@ export default class WebcamCapture extends Component {
     }
 
     _keyPressed(event) {
-        if (event.keyCode === 32 && !this._processing) {
+        if (this._processing) {
+            return;
+        }
+
+        if (event.keyCode === 32) {
             PubSub.publish(WCEvents.NEW_SCREENSHOOT)
+        } else if (event.keyCode === 13) {
+            PubSub.publish(WCEvents.ENTER_PRESSED)
         }
     }
 
@@ -50,11 +59,34 @@ export default class WebcamCapture extends Component {
         this._processing = false;
     }
 
+    subscribeSave(msg,data) {
+        if (msg === "") {
+            return
+        }
+
+        //Actual saving is done by ScreenshootBar
+        this.setState({showSaveDialog: false})
+    }
+
+    subscribeEnterPressed(msg,data) {
+        if (msg === "" 
+            || this.state.showSaveDialog === true
+            || this._screenshootBar.current.getScreenshoots().length===0) {
+            return
+        }
+
+        this.setState({showSaveDialog : true})
+    }
+
     componentDidMount() {
         document.addEventListener("keydown", this._keyPressed, false);
         
         PubSub.subscribe(WCEvents.NEW_SCREENSHOOT, this.subscribeSnapshot.bind(this));
+        PubSub.subscribe(WCEvents.SAVE, this.subscribeSave.bind(this));
+        PubSub.subscribe(WCEvents.ENTER_PRESSED, this.subscribeEnterPressed.bind(this));
         this.subscribeSnapshot("", "")
+        this.subscribeSave("","")
+        this.subscribeEnterPressed("", "")
     }    
 
     componentWillUnmount() {
