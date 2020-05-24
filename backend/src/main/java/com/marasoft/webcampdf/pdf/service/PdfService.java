@@ -1,4 +1,4 @@
-package com.marasoft.webcampdf.pdf;
+package com.marasoft.webcampdf.pdf.service;
 
 import java.awt.Color;
 import java.awt.Image;
