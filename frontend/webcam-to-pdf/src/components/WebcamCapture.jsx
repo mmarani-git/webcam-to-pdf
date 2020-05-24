@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import Webcam from 'react-webcam'
 import ScreenshootBar from './ScreenshootBar'
 import './WebcamCapture.css'
+import { WCEvents } from '../misc/WCEvents.js'
 
 export default class WebcamCapture extends Component {
     constructor(props) {
@@ -35,7 +36,7 @@ export default class WebcamCapture extends Component {
 
     _keyPressed(event) {
         if (event.keyCode === 32 && !this._processing) {
-            PubSub.publish("snapshot")
+            PubSub.publish(WCEvents.NEW_SCREENSHOOT)
         }
     }
 
@@ -52,7 +53,7 @@ export default class WebcamCapture extends Component {
     componentDidMount() {
         document.addEventListener("keydown", this._keyPressed, false);
         
-        PubSub.subscribe("snapshot", this.subscribeSnapshot.bind(this));
+        PubSub.subscribe(WCEvents.NEW_SCREENSHOOT, this.subscribeSnapshot.bind(this));
         this.subscribeSnapshot("", "")
     }    
 

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './ScreenshootBar.css'
 import ScreenshootPreview from './ScreenshootPreview'
+import { WCEvents } from '../misc/WCEvents.js'
+import PubSub from 'pubsub-js'
 
 export default class ScreenshootBar extends Component {
     constructor(props) {
@@ -13,19 +15,36 @@ export default class ScreenshootBar extends Component {
     render() {
         return (<div><div className="scrollX">
             {this.state.screenshoots.map(
-                (screenshoot, index) => <ScreenshootPreview src={screenshoot} index={index} />
+                (screenshoot, index) => <ScreenshootPreview index={index} key={index} src={screenshoot} />
             )}
         </div></div>)
     }
 
     addScreenshoot(screenshoot) {
-        let currentSnaps = this.state.screenshoots.slice(0);
-        /*
-        if (currentSnaps.length > 5) {
-            currentSnaps.shift();
-        }
-        */
+        let currentSnaps = this.state.screenshoots.slice();
+        
         currentSnaps.push(screenshoot);
         this.setState({ screenshoots: currentSnaps });
+    }
+
+    componentDidMount() {
+        PubSub.subscribe(WCEvents.SCREENSHOOT_DELETED, this.subscribeSnapshotDeleted.bind(this));
+        this.subscribeSnapshotDeleted("", "")
+    }
+
+    subscribeSnapshotDeleted(msg,data) {
+        if (msg==="") {
+            return;
+        }
+        
+        let currentSnaps = this.state.screenshoots.slice();
+        currentSnaps.splice(data.index,1);
+        /*
+        Workaround, probably something is wrong with my key in the map above.
+        https://github.com/facebook/react/issues/16964
+        */
+        const nullStatus = Array();
+        this.setState({screenshoots : nullStatus});
+        this.setState({screenshoots : currentSnaps});
     }
 }
