@@ -14,7 +14,7 @@ export default class WebcamCapture extends Component {
             showSaveDialog: false
         }
 
-        this._processing=false;
+        this._processing = false;
         this._webcam = React.createRef()
         this._screenshootBar = React.createRef()
     }
@@ -23,15 +23,16 @@ export default class WebcamCapture extends Component {
         return (
             <div>
                 <SaveDialog show={this.state.showSaveDialog} />
-                <Webcam id="webcam" 
-                    ref={this._webcam} 
+                <Webcam id="webcam"
+                    ref={this._webcam}
                     forceScreenshotSourceSize="true"
-                     audio={false} 
-                     videoConstraints={{
+                    screenshotFormat="image/jpeg"
+                    audio={false}
+                    videoConstraints={{
                         deviceId: this.state.deviceId,
-                        width: {ideal: 10000}, 
-                        height: {ideal: 10000}
-                }} />
+                        width: { ideal: 10000 },
+                        height: { ideal: 10000 }
+                    }} />
                 <ScreenshootBar ref={this._screenshootBar} />
             </div>
         )
@@ -53,41 +54,41 @@ export default class WebcamCapture extends Component {
         if (msg === "") {
             return
         }
-        
+
         this._processing = true;
         this._screenshootBar.current.addScreenshoot(this._webcam.current.getScreenshot())
         this._processing = false;
     }
 
-    subscribeSave(msg,data) {
+    subscribeSave(msg, data) {
         if (msg === "") {
             return
         }
 
         //Actual saving is done by ScreenshootBar
-        this.setState({showSaveDialog: false})
+        this.setState({ showSaveDialog: false })
     }
 
-    subscribeEnterPressed(msg,data) {
-        if (msg === "" 
+    subscribeEnterPressed(msg, data) {
+        if (msg === ""
             || this.state.showSaveDialog === true
-            || this._screenshootBar.current.getScreenshoots().length===0) {
+            || this._screenshootBar.current.getScreenshoots().length === 0) {
             return
         }
 
-        this.setState({showSaveDialog : true})
+        this.setState({ showSaveDialog: true })
     }
 
     componentDidMount() {
         document.addEventListener("keydown", this._keyPressed, false);
-        
+
         PubSub.subscribe(WCEvents.NEW_SCREENSHOOT, this.subscribeSnapshot.bind(this));
         PubSub.subscribe(WCEvents.SAVE, this.subscribeSave.bind(this));
         PubSub.subscribe(WCEvents.ENTER_PRESSED, this.subscribeEnterPressed.bind(this));
         this.subscribeSnapshot("", "")
-        this.subscribeSave("","")
+        this.subscribeSave("", "")
         this.subscribeEnterPressed("", "")
-    }    
+    }
 
     componentWillUnmount() {
         document.removeEventListener("keydown", this._keyPressed, false);
