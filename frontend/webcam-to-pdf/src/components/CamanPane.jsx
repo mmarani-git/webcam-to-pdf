@@ -1,108 +1,26 @@
 import React, { Component } from 'react'
-import ImageService from '../services/ImageService.js'
+
+const CANVAS_HEIGHT = 200
 
 export default class CamanPane extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            image: ""
-        }
-    }
-
-    render() {
-        return (
-            <div className="row">
-                <div className="width40"><Controls /></div>
-                <div className="width60"><Canvas image={this.state.image} /></div>
-            </div>
-        )
-    }
-
-    addScreenshoot(image) {
-        this.setState({ image: image })
-    }
-}
-
-class Controls extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
+            image: "",
             grayscale: false,
             contrast: 0,
             brightness: 0,
             saturation: 0,
             hue: 0
         }
-    }
 
-    render() {
-        return (<>
-            <div className="row">
-                <div className="text-right">
-                    Grayscale:
-            </div>
-                <input className="margin10"
-                    type="checkbox"
-                    id="grayscale"
-                    name="grayscale"
-                    value={this.state.grayscale}
-                    onChange={this.handleValueChanged} />
-            </div>
-            <div className="row">
-                <div className="width50 text-right">
-                    Contrast:
-                </div>
-                <input className="margin10"
-                    type="range" min="-100"
-                    step="1"
-                    max="100"
-                    vaule={this.state.contrast}
-                    onChange={this.handleValueChanged} />
-            </div>
-            <div className="row">
-                <div className="width50 text-right">
-                    Brightness:
-                </div>
-                <input className="margin10"
-                    type="range" min="-100"
-                    step="1"
-                    max="100"
-                    vaule={this.state.brightness}
-                    onChange={this.handleValueChanged} />
-            </div>
-            <div className="row">
-                <div className="width50 text-right">
-                    Saturation:
-                </div>
-                <input className="margin10"
-                    type="range" min="-100"
-                    step="1"
-                    max="100"
-                    vaule={this.state.saturation}
-                    onChange={this.handleValueChanged} />
-            </div>
-            <div className="row">
-                <div className="width50 text-right">
-                    Hue:
-                </div>
-                <input className="margin10"
-                    type="range" min="-100"
-                    step="1"
-                    max="100"
-                    vaule={this.state.hue}
-                    onChange={this.handleValueChanged} />
-            </div>
-        </>)
-    }
-}
-
-const CANVAS_HEIGHT = 200
-
-class Canvas extends Component {
-
-    constructor(props) {
-        super(props)
         this._canvas = React.createRef();
+    }
+
+    handleValueChanged = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        })
     }
 
     render() {
@@ -115,12 +33,79 @@ class Canvas extends Component {
         }
 
         let canvas = this._canvas.current
-        
+
         if (canvas !== null) {
             this.updateCanvas(canvas);
         }
 
-        return (<canvas ref={this._canvas} id="canvas" style={canvasStyles}></canvas>)
+        return (
+            <div className="row">
+                <div className="width40">
+                    <div className="row">
+                        <div className="text-right">
+                            Grayscale:
+                        </div>
+                        <input className="margin10"
+                            type="checkbox"
+                            id="grayscale"
+                            name="grayscale"
+                            value={this.state.grayscale}
+                            onChange={this.handleValueChanged} />
+                    </div>
+                    <div className="row">
+                        <div className="width50 text-right">
+                            Contrast:
+                        </div>
+                        <input className="margin10"
+                            type="range" min="-100"
+                            step="1"
+                            max="100"
+                            vaule={this.state.contrast}
+                            onChange={this.handleValueChanged} />
+                    </div>
+                    <div className="row">
+                        <div className="width50 text-right">
+                            Brightness:
+                        </div>
+                        <input className="margin10"
+                            type="range" min="-100"
+                            step="1"
+                            max="100"
+                            vaule={this.state.brightness}
+                            onChange={this.handleValueChanged} />
+                    </div>
+                    <div className="row">
+                        <div className="width50 text-right">
+                            Saturation:
+                        </div>
+                        <input className="margin10"
+                            type="range" min="-100"
+                            step="1"
+                            max="100"
+                            vaule={this.state.saturation}
+                            onChange={this.handleValueChanged} />
+                    </div>
+                    <div className="row">
+                        <div className="width50 text-right">
+                            Hue:
+                        </div>
+                        <input className="margin10"
+                            type="range" min="-100"
+                            step="1"
+                            max="100"
+                            vaule={this.state.hue}
+                            onChange={this.handleValueChanged} />
+                    </div>
+                </div>
+                <div className="width60">
+                    <canvas id="camanCanvas" ref={this._canvas} id="canvas" style={canvasStyles}></canvas>
+                </div>
+            </div>
+        )
+    }
+
+    addScreenshoot(image) {
+        this.setState({ image: image })
     }
 
     updateCanvas = (canvas) => {
@@ -129,7 +114,7 @@ class Canvas extends Component {
         /*
         UNDEFINED: WHY ??????????????????????????????????????????
         THIS IS SYNC
-        let w = ImageService.getWidthFromNewHeight(this.props.image, CANVAS_HEIGHT)
+        let w = ImageService.getWidthFromNewHeight(this.state.image, CANVAS_HEIGHT)
         */
         let w = CANVAS_HEIGHT / 3 * 4
         canvas.width = w
@@ -138,7 +123,10 @@ class Canvas extends Component {
         let image = new Image()
         image.onload = function () {
             ctx.drawImage(image, 0, 0, w, CANVAS_HEIGHT)
+            Caman("#camanCanvas", function () {
+
+            })
         }
-        image.src = this.props.image
+        image.src = this.state.image
     }
 }
