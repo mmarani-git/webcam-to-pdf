@@ -44,7 +44,8 @@ export default class FilterPane extends Component {
                             type="range" min="0.0"
                             step="0.01"
                             max="2.0"
-                            vaule={this.state.contrast}
+                            name="contrast"
+                            value={this.state.contrast}
                             onChange={this.handleValueChanged} />
                     </div>
                     <div className="row">
@@ -53,7 +54,8 @@ export default class FilterPane extends Component {
                             type="range" min="0.0"
                             step="0.01"
                             max="2.0"
-                            vaule={this.state.brightness}
+                            name="brightness"
+                            value={this.state.brightness}
                             onChange={this.handleValueChanged} />
                     </div>
                     <div className="row">
@@ -62,7 +64,8 @@ export default class FilterPane extends Component {
                             type="range" min="0.0"
                             step="0.01"
                             max="2.0"
-                            vaule={this.state.saturation}
+                            name="saturation"
+                            value={this.state.saturation}
                             onChange={this.handleValueChanged} />
                     </div>
                     <div className="row">
@@ -71,7 +74,8 @@ export default class FilterPane extends Component {
                             type="range" min="0"
                             step="1"
                             max="360"
-                            vaule={this.state.hue}
+                            name="hue"
+                            value={this.state.hue}
                             onChange={this.handleValueChanged} />
                     </div>
                 </div>
