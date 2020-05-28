@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ImageService from '../services/ImageService.js'
 
+const FILTER_PREVIEW_H = 200
+
 export default class FilterPane extends Component {
     constructor(props) {
         super(props)
@@ -19,11 +21,7 @@ export default class FilterPane extends Component {
         let imgStyles = {
             margin: 'auto',
             position: 'relative',
-            top: 54,
-            border: '1px',
-            borderColor: 'black',
-            width: 400,
-            height: 300
+            top: 54
         }
         
         let controllerContainerStyles = {
@@ -81,7 +79,11 @@ export default class FilterPane extends Component {
                     <button className="btn btn-primary width70 margin10" onClick={this.resetSliders}>Reset</button>
                 </div>
                 <div className="width60">
-                    {this.state.image && (<img ref={this._img} style={imgStyles} src={this.state.image} />)}
+                    {this.state.image && (<img ref={this._img} 
+                        style={imgStyles} 
+                        src={this.state.image} 
+                        width={ImageService.getWidthFromNewHeight(this.state.src,FILTER_PREVIEW_H)}
+                        height={FILTER_PREVIEW_H} />)}
                 </div>
             </div>
         )
