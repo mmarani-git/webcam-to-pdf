@@ -5,7 +5,7 @@ export default class CamanPane extends Component {
         return (
             <div className="row">
                 <div className="width40"><Controls /></div>
-                <div className="width60"><Preview /></div>
+                <div className="width60"><Canvas /></div>
             </div>
         )
     }
@@ -83,8 +83,17 @@ class Controls extends Component {
     }
 }
 
-class Preview extends Component {
+class Canvas extends Component {
     render() {
-        return ("Preview")
+        const canvasStyles = {
+			margin: 'auto',
+			position:'absolute',
+			left:0,
+            right:0,
+            border: '1px',
+            borderColor: 'black'
+        }
+        
+        return (<canvas ref="canvas" id="canvas" style={canvasStyles}></canvas>)
     }
 }
