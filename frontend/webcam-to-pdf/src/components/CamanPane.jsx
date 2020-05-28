@@ -1,26 +1,25 @@
 import React, { Component } from 'react'
+import ImageService from '../services/ImageService.js'
 
 export default class CamanPane extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            image : ""
+            image: ""
         }
-
-        this._canvas = React.createRef();
     }
 
     render() {
         return (
             <div className="row">
                 <div className="width40"><Controls /></div>
-                <div className="width60"><Canvas ref={this._canvas}/></div>
+                <div className="width60"><Canvas image={this.state.image} /></div>
             </div>
         )
     }
 
     addScreenshoot(image) {
-        this._canvas.current.updateImage(image)
+        this.setState({ image: image })
     }
 }
 
@@ -97,7 +96,10 @@ class Controls extends Component {
     }
 }
 
+const CANVAS_HEIGHT = 200
+
 class Canvas extends Component {
+
     constructor(props) {
         super(props)
         this._canvas = React.createRef();
@@ -105,27 +107,38 @@ class Canvas extends Component {
 
     render() {
         const canvasStyles = {
-			margin: 'auto',
-			position:'relative',
-			top: 50,
+            margin: 'auto',
+            position: 'relative',
+            top: 50,
             border: '1px',
             borderColor: 'black'
         }
+
+        let canvas = this._canvas.current
         
+        if (canvas !== null) {
+            this.updateCanvas(canvas);
+        }
+
         return (<canvas ref={this._canvas} id="canvas" style={canvasStyles}></canvas>)
     }
 
-    updateImage(screenshoot) {
-        let canvas = this._canvas.current
+    updateCanvas = (canvas) => {
         let ctx = canvas.getContext('2d');
-        
-        canvas.width=200
-        canvas.height=150
+
+        /*
+        UNDEFINED: WHY ??????????????????????????????????????????
+        THIS IS SYNC
+        let w = ImageService.getWidthFromNewHeight(this.props.image, CANVAS_HEIGHT)
+        */
+        let w = CANVAS_HEIGHT / 3 * 4
+        canvas.width = w
+        canvas.height = CANVAS_HEIGHT
 
         let image = new Image()
-        image.onload = function() {
-            ctx.drawImage(image,0,0,200,150)
-        }    
-        image.src=screenshoot    
+        image.onload = function () {
+            ctx.drawImage(image, 0, 0, w, CANVAS_HEIGHT)
+        }
+        image.src = this.props.image
     }
 }
