@@ -123,9 +123,7 @@ export default class CamanPane extends Component {
         let image = new Image()
         image.onload = function () {
             ctx.drawImage(image, 0, 0, w, CANVAS_HEIGHT)
-            Caman("#camanCanvas", function () {
-
-            })
+            
         }
         image.src = this.state.image
     }
