@@ -5,6 +5,7 @@ import ScreenshootBar from './ScreenshootBar'
 import './WebcamCapture.css'
 import { WCEvents } from '../misc/WCEvents.js'
 import SaveDialog from './SaveDialog.jsx'
+import CamanPane from './CamanPane'
 
 export default class WebcamCapture extends Component {
     constructor(props) {
@@ -22,16 +23,21 @@ export default class WebcamCapture extends Component {
         return (
             <div>
                 <SaveDialog show={this.state.showSaveDialog} />
-                <Webcam id="webcam"
-                    ref={this._webcam}
-                    forceScreenshotSourceSize="true"
-                    screenshotFormat="image/jpeg"
-                    audio={false}
-                    videoConstraints={{
-                        deviceId: this.props.deviceId,
-                        width: { ideal: 10000 },
-                        height: { ideal: 10000 }
-                    }} />
+                <div className="row">
+                    <div className="width50">
+                        <Webcam id="webcam"
+                            ref={this._webcam}
+                            forceScreenshotSourceSize="true"
+                            screenshotFormat="image/jpeg"
+                            audio={false}
+                            videoConstraints={{
+                                deviceId: this.props.match.params.deviceId,
+                                width: { ideal: 10000 },
+                                height: { ideal: 10000 }
+                            }} />
+                    </div>
+                    <div className="width50"><CamanPane /></div>
+                </div>
                 <ScreenshootBar ref={this._screenshootBar} />
             </div>
         )
