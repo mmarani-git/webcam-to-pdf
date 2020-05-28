@@ -44,8 +44,23 @@
     width: 100%;
 }
 
+.width70 {
+    width: 70%;
+}
+
+.width60 {
+    width: 60%;
+}
+
 .width50 {
     width: 50%;
+}
+
+.width40 {
+    width: 40%;
+}
+.width30 {
+    width: 30%;
 }
 
 .App-link {

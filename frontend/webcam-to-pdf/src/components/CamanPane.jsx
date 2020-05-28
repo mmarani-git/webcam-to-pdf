@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
-export default class CamanPreview extends Component {
+export default class CamanPane extends Component {
     render() {
         return (
             <div className="row">
-                <div className="width50"><Controls /></div>
-                <div className="width50"><Preview /></div>
+                <div className="width40"><Controls /></div>
+                <div className="width60"><Preview /></div>
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import WebcamCapture from './WebcamCapture'
-import CamanPreview from './CamanPane'
+import CamanPane from './CamanPane'
 
 export default class MainPage extends Component {
     constructor(props) {
@@ -13,7 +13,7 @@ export default class MainPage extends Component {
     render() {
         return (<div className="row">
             <div className="width50"><WebcamCapture deviceId={this.state.deviceId} /></div>
-            <div className="width50"><CamanPreview/></div>
+            <div className="width50"><CamanPane/></div>
         </div>
         )
     }
