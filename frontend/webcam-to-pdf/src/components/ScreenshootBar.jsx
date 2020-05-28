@@ -30,9 +30,18 @@ export default class ScreenshootBar extends Component {
     componentDidMount() {
         PubSub.subscribe(WCEvents.SCREENSHOOT_DELETED, this.subscribeSnapshotDeleted.bind(this));
         PubSub.subscribe(WCEvents.SAVE, this.subscribeSave.bind(this));
+        PubSub.subscribe(WCEvents.SCREENSHOOT_FILTERED, this.subscribeScreenshootFiltered.bind(this));
 
         this.subscribeSnapshotDeleted("", "")
         this.subscribeSave("", "")
+        this.subscribeScreenshootFiltered("","")
+    }
+
+    subscribeScreenshootFiltered(msg,data) {
+        if (msg==="") {
+            return;
+        }
+        this.addScreenshoot(data.image)
     }
 
     getScreenshoots = () => {

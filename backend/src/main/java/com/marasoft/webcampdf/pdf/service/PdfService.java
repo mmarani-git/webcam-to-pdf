@@ -32,7 +32,7 @@ public class PdfService {
 	private WorkDir workDir;
 
 	public File createPdf(List<String> pagesBase64, String fileName) {
-		List<File> images = pagesBase64.stream().map(base64 -> base64ToFile(base64, "jpg")).collect(Collectors.toList());
+		List<File> images = pagesBase64.stream().map(base64 -> base64ToFile(base64, "png")).collect(Collectors.toList());
 		File outputFile = new File(workDir.getOutputDir(), fileName);
 		
 		createPdf(images, outputFile);

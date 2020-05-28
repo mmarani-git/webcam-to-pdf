@@ -18,6 +18,19 @@ class ImageService {
             return Math.round(parseFloat(dimension.w) * parseFloat(wantedHeight) / parseFloat(dimension.h));
         })
     }
+
+    createFilter(filterObject) {
+        let filters = "brightness(" + filterObject.brightness + ") " +
+            "contrast(" + filterObject.contrast + ") "
+
+        if (filterObject.saturation == 0.0) {
+            filters = filters + "grayscale(100%)"
+        } else {
+            filters = filters + "saturate(" + filterObject.saturation + ") "
+        }
+
+        return filters
+    }
 }
 
 export default new ImageService()

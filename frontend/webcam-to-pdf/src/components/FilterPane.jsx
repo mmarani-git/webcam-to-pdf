@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import ImageService from '../services/ImageService.js'
+import { WCEvents } from '../misc/WCEvents.js'
+import PubSub from 'pubsub-js'
 
 const FILTER_PREVIEW_H = 200
 
@@ -13,8 +15,19 @@ export default class FilterPane extends Component {
             contrast: 1.0,
             saturation: 1.0
         }
+    }
 
-        this._img = React.createRef()
+    getFilters = () => {
+        let filters = "brightness(" + this.state.brightness + ") " +
+            "contrast(" + this.state.contrast + ") "
+            
+        if (this.state.saturation == 0.0) {
+            filters = filters + "grayscale(100%)"
+        } else {
+            filters = filters + "saturate("+this.state.saturation+") " 
+        }
+
+        return filters
     }
 
     render() {
@@ -32,16 +45,7 @@ export default class FilterPane extends Component {
         /* TODO we must extract the filtered
         https://stackoverflow.com/questions/30408939/how-to-save-image-from-canvas-with-css-filters
         */
-        let filters = "brightness(" + this.state.brightness + ") " +
-            "contrast(" + this.state.contrast + ") "
-            
-        if (this.state.saturation == 0.0) {
-            filters = filters + "grayscale(100%)"
-        } else {
-            filters = filters + "saturate("+this.state.saturation+") " 
-        }
-
-        imgStyles.filter = filters
+        imgStyles.filter = this.getFilters()
 
         return (
             <div className="row">
@@ -79,14 +83,32 @@ export default class FilterPane extends Component {
                     <button className="btn btn-primary width70 margin10" onClick={this.resetSliders}>Reset</button>
                 </div>
                 <div className="width60">
-                    {this.state.image && (<img ref={this._img} 
+                    {this.state.image && (<img
+                        onLoad={this.imageLoaded}
                         style={imgStyles} 
                         src={this.state.image} 
-                        width={ImageService.getWidthFromNewHeight(this.state.src,FILTER_PREVIEW_H)}
+                        width={ImageService.getWidthFromNewHeight(this.state.image,FILTER_PREVIEW_H)}
                         height={FILTER_PREVIEW_H} />)}
                 </div>
             </div>
         )
+    }
+
+    imageLoaded = () => {
+        let canvas = document.createElement('canvas')
+        let ctx = canvas.getContext("2d")
+
+        let img = new Image();
+        let filters = this.getFilters()
+
+        img.onload=function() {
+            canvas.width=img.width
+            canvas.height=img.height
+            ctx.filter = filters
+            ctx.drawImage(img,0,0)
+            PubSub.publish(WCEvents.SCREENSHOOT_FILTERED, {image: canvas.toDataURL()})
+        }
+        img.src = this.state.image
     }
 
     resetSliders = () => {
@@ -94,9 +116,6 @@ export default class FilterPane extends Component {
     }
 
     handleValueChanged = (event) => {
-        if (event.target.name === "grayscale") {
-            alert(event.target.value)
-        }
 
         this.setState({
             [event.target.name]: event.target.value

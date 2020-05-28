@@ -29,7 +29,7 @@ export default class WebcamCapture extends Component {
                         <Webcam id="webcam"
                             ref={this._webcam}
                             forceScreenshotSourceSize="true"
-                            screenshotFormat="image/jpeg"
+                            screenshotFormat="image/png"
                             audio={false}
                             videoConstraints={{
                                 deviceId: this.props.match.params.deviceId,
@@ -63,7 +63,6 @@ export default class WebcamCapture extends Component {
 
         this._processing = true;
         let image = this._webcam.current.getScreenshot();
-        this._screenshootBar.current.addScreenshoot(image)
         this._filterPane.current.addScreenshoot(image)
         this._processing = false;
     }
