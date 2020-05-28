@@ -10,7 +10,6 @@ export default class WebcamCapture extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            deviceId: this.props.match.params.deviceId,
             showSaveDialog: false
         }
 
@@ -29,7 +28,7 @@ export default class WebcamCapture extends Component {
                     screenshotFormat="image/jpeg"
                     audio={false}
                     videoConstraints={{
-                        deviceId: this.state.deviceId,
+                        deviceId: this.props.deviceId,
                         width: { ideal: 10000 },
                         height: { ideal: 10000 }
                     }} />

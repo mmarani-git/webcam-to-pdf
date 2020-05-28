@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import WebcamChooser from './components/WebcamChooser'
-import WebcamCapture from './components/WebcamCapture'
+import MainPage from './components/MainPage'
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={WebcamChooser} />
-          <Route path="/capture/:deviceId" component={WebcamCapture} />
+          <Route path="/capture/:deviceId" component={MainPage} />
 
           <Route component={BadRouteComponent} />
           <WebcamChooser />

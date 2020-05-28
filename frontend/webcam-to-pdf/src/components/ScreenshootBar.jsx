@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import './ScreenshootBar.css'
 import ScreenshootPreview from './ScreenshootPreview'
 import { WCEvents } from '../misc/WCEvents.js'
 import PubSub from 'pubsub-js'
