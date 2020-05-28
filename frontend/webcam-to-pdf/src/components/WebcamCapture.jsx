@@ -5,7 +5,7 @@ import ScreenshootBar from './ScreenshootBar'
 import './WebcamCapture.css'
 import { WCEvents } from '../misc/WCEvents.js'
 import SaveDialog from './SaveDialog.jsx'
-import CamanPane from './CamanPane'
+import FilterPane from './FilterPane'
 
 export default class WebcamCapture extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ export default class WebcamCapture extends Component {
         this._processing = false;
         this._webcam = React.createRef()
         this._screenshootBar = React.createRef()
-        this._camanPane = React.createRef();
+        this._filterPane = React.createRef();
     }
 
     render() {
@@ -37,7 +37,7 @@ export default class WebcamCapture extends Component {
                                 height: { ideal: 10000 }
                             }} />
                     </div>
-                    <div className="width50"><CamanPane ref={this._camanPane} /></div>
+                    <div className="width50"><FilterPane ref={this._filterPane} /></div>
                 </div>
                 <ScreenshootBar ref={this._screenshootBar} />
             </div>
@@ -64,7 +64,7 @@ export default class WebcamCapture extends Component {
         this._processing = true;
         let image = this._webcam.current.getScreenshot();
         this._screenshootBar.current.addScreenshoot(image)
-        this._camanPane.current.addScreenshoot(image)
+        this._filterPane.current.addScreenshoot(image)
         this._processing = false;
     }
 
