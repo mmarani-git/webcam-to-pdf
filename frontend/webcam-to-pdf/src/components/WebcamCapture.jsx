@@ -17,6 +17,7 @@ export default class WebcamCapture extends Component {
         this._processing = false;
         this._webcam = React.createRef()
         this._screenshootBar = React.createRef()
+        this._camanPane = React.createRef();
     }
 
     render() {
@@ -36,7 +37,7 @@ export default class WebcamCapture extends Component {
                                 height: { ideal: 10000 }
                             }} />
                     </div>
-                    <div className="width50"><CamanPane /></div>
+                    <div className="width50"><CamanPane ref={this._camanPane} /></div>
                 </div>
                 <ScreenshootBar ref={this._screenshootBar} />
             </div>
@@ -61,7 +62,9 @@ export default class WebcamCapture extends Component {
         }
 
         this._processing = true;
-        this._screenshootBar.current.addScreenshoot(this._webcam.current.getScreenshot())
+        let image = this._webcam.current.getScreenshot();
+        this._screenshootBar.current.addScreenshoot(image)
+        this._camanPane.current.addScreenshoot(image)
         this._processing = false;
     }
 
