@@ -28,10 +28,10 @@ export default class SaveDialog extends Component {
     }
 
     componentDidMount() {
-        this._enterPressedSubscriptionToken =  PubSub.subscribe(SaveDialogEvents.ENTER_PRESSED,this.subscribeEnterPressed.bind(this))
-        this._escPressedSubscriptionToken = PubSub.subscribe(SaveDialogEvents.ESC_PRESSED,this.subscribeEscPressed.bind(this))
-        this.subscribeEnterPressed("","")
-        this.subscribeEscPressed("","")
+        this._enterPressedSubscriptionToken =  PubSub.subscribe(SaveDialogEvents.ENTER_PRESSED,this._subscribeEnterPressed.bind(this))
+        this._escPressedSubscriptionToken = PubSub.subscribe(SaveDialogEvents.ESC_PRESSED,this._subscribeEscPressed.bind(this))
+        this._subscribeEnterPressed("","")
+        this._subscribeEscPressed("","")
     }
 
     componentWillUnmount() {
@@ -39,7 +39,7 @@ export default class SaveDialog extends Component {
         PubSub.unsubscribe(this._escPressedSubscriptionToken)
     }
 
-    subscribeEnterPressed(msg,data) {
+    _subscribeEnterPressed(msg,data) {
         if (msg === "") {
             return
         }
@@ -47,7 +47,7 @@ export default class SaveDialog extends Component {
         this._save()
     }
 
-    subscribeEscPressed(msg,data) {
+    _subscribeEscPressed(msg,data) {
         if (msg === "") {
             return
         }
@@ -69,7 +69,7 @@ export default class SaveDialog extends Component {
                             type="text"
                             name={this.K_FILENAME}
                             value={this.state[this.K_FILENAME]}
-                            onChange={this.handleValueChanged} />
+                            onChange={this._handleValueChanged} />
                     </div>
                     <div className="outer">
                         <div className="inline inner">
@@ -101,7 +101,7 @@ export default class SaveDialog extends Component {
         PubSub.publish(WCEvents.SAVE, {fileName : this.state[this.K_FILENAME] })
     }
 
-    handleValueChanged = (event) => {
+    _handleValueChanged = (event) => {
         this.setState({
             [event.target.name]: event.target.value
         })

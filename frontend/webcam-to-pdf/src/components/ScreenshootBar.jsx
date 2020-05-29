@@ -28,16 +28,16 @@ export default class ScreenshootBar extends Component {
     }
 
     componentDidMount() {
-        PubSub.subscribe(WCEvents.SCREENSHOOT_DELETED, this.subscribeSnapshotDeleted.bind(this));
-        PubSub.subscribe(WCEvents.SAVE, this.subscribeSave.bind(this));
-        PubSub.subscribe(WCEvents.SCREENSHOOT_FILTERED, this.subscribeScreenshootFiltered.bind(this));
+        PubSub.subscribe(WCEvents.SCREENSHOOT_DELETED, this._subscribeSnapshotDeleted.bind(this));
+        PubSub.subscribe(WCEvents.SAVE, this._subscribeSave.bind(this));
+        PubSub.subscribe(WCEvents.SCREENSHOOT_FILTERED, this._subscribeScreenshootFiltered.bind(this));
 
-        this.subscribeSnapshotDeleted("", "")
-        this.subscribeSave("", "")
-        this.subscribeScreenshootFiltered("","")
+        this._subscribeSnapshotDeleted("", "")
+        this._subscribeSave("", "")
+        this._subscribeScreenshootFiltered("","")
     }
 
-    subscribeScreenshootFiltered(msg,data) {
+    _subscribeScreenshootFiltered(msg,data) {
         if (msg==="") {
             return;
         }
@@ -48,7 +48,7 @@ export default class ScreenshootBar extends Component {
         return this.state.screenshoots.slice()
     }
 
-    subscribeSnapshotDeleted(msg,data) {
+    _subscribeSnapshotDeleted(msg,data) {
         if (msg==="") {
             return;
         }
@@ -64,11 +64,11 @@ export default class ScreenshootBar extends Component {
         this.setState({screenshoots : currentSnaps});
     }
 
-    subscribeSave(msg,data) {
+    _subscribeSave(msg,data) {
         if (msg==="" || data.fileName==="") {
             return;
         }
-
+        
         PdfService.savePdf(this.state.screenshoots, data.fileName).then(this.reset())
     }
 

@@ -24,13 +24,13 @@ export default class ScreenshootPreview extends Component {
                     src={this.state.src} />
                 <div className="outer">
                     <div className="inline inner">{this.state.index}</div>
-                    <div className="inline inner"><button onClick={this.publishDelete} className="btn btn-danger width100"><i className="fa fa-trash"/></button></div>
+                    <div className="inline inner"><button onClick={this._publishDelete} className="btn btn-danger width100"><i className="fa fa-trash"/></button></div>
                 </div>
             </div>
         )
     }
 
-    publishDelete = () => {
+    _publishDelete = () => {
         PubSub.publish(WCEvents.SCREENSHOOT_DELETED, {index: this.state.index})
     }
 }

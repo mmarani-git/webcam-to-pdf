@@ -21,7 +21,7 @@ export default class WebcamCapture extends Component {
         this._saveDialog = React.createRef();
     }
 
-    willShowSaveDialog = () => {
+    _willShowSaveDialog = () => {
         return this.state.showSaveDialog === true 
             && this._saveDialog !== undefined
             && this._saveDialog !== null
@@ -30,7 +30,7 @@ export default class WebcamCapture extends Component {
     }
 
     render() {
-        if (this.willShowSaveDialog()) {
+        if (this._willShowSaveDialog()) {
             this._saveDialog.current.reset()
         }
 
@@ -66,16 +66,16 @@ export default class WebcamCapture extends Component {
         }
     }
 
-    addKeydownListener() {
+    _addKeydownListener() {
         document.addEventListener("keydown", this._keyPressed, false);
     }
 
-    removeKeydownListener() {
+    _removeKeydownListener() {
         document.removeEventListener("keydown", this._keyPressed, false);
     }
 
     //Events mgmt
-    subscribeSnapshot(msg, data) {
+    _subscribeSnapshot(msg, data) {
         if (msg === "") {
             return
         }
@@ -84,33 +84,33 @@ export default class WebcamCapture extends Component {
         this._filterPane.current.addScreenshoot(image)
     }
 
-    subscribeSave(msg, data) {
+    _subscribeSave(msg, data) {
         if (msg === "") {
             return
         }
 
         //Actual saving is done by ScreenshootBar
-        this.hideSaveDialog()
+        this._hideSaveDialog()
     }
 
-    subscribeShowSaveDialog(msg, data) {
+    _subscribeShowSaveDialog(msg, data) {
         if (msg === ""
             || this.state.showSaveDialog === true
             || this._screenshootBar.current.getScreenshoots().length === 0) {
             return
         }
 
-        this.showSaveDialog()
+        this._showSaveDialog()
     }
 
     //SaveDialog
-    hideSaveDialog() {
+    _hideSaveDialog() {
         this.setState({ showSaveDialog: false })
         document.addEventListener("keydown", this._keyPressed, false);
         document.removeEventListener("keydown", this._saveDialog.current.keyPressed, false);
     }
 
-    showSaveDialog() {
+    _showSaveDialog() {
         this.setState({ showSaveDialog: true })
         document.removeEventListener("keydown", this._keyPressed, false);
         document.addEventListener("keydown", this._saveDialog.current.keyPressed, false);
@@ -118,18 +118,18 @@ export default class WebcamCapture extends Component {
 
     //Lifecycle methods
     componentDidMount() {
-        this.addKeydownListener()
+        this._addKeydownListener()
 
-        this._snapshotSubscriptionToken = PubSub.subscribe(WCEvents.NEW_SCREENSHOOT, this.subscribeSnapshot.bind(this));
-        this._saveSubscriptionToken = PubSub.subscribe(WCEvents.SAVE, this.subscribeSave.bind(this));
-        this._showSaveDialogSubscriptionToken = PubSub.subscribe(WCEvents.SHOW_SAVE_DIALOG, this.subscribeShowSaveDialog.bind(this));
-        this.subscribeSnapshot("", "")
-        this.subscribeSave("", "")
-        this.subscribeShowSaveDialog("", "")
+        this._snapshotSubscriptionToken = PubSub.subscribe(WCEvents.NEW_SCREENSHOOT, this._subscribeSnapshot.bind(this));
+        this._saveSubscriptionToken = PubSub.subscribe(WCEvents.SAVE, this._subscribeSave.bind(this));
+        this._showSaveDialogSubscriptionToken = PubSub.subscribe(WCEvents.SHOW_SAVE_DIALOG, this._subscribeShowSaveDialog.bind(this));
+        this._subscribeSnapshot("", "")
+        this._subscribeSave("", "")
+        this._subscribeShowSaveDialog("", "")
     }
 
     componentWillUnmount() {
-        this.removeKeydownListener();
+        this._removeKeydownListener();
         PubSub.unsubscribe(this._snapshotSubscriptionToken)
         PubSub.unsubscribe(this._saveSubscriptionToken)
         PubSub.unsubscribe(this._showSaveDialogSubscriptionToken)
