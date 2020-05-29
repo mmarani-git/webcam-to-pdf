@@ -33,7 +33,7 @@ export default class WebcamCapture extends Component {
         if (this._willShowSaveDialog()) {
             this._saveDialog.current.reset()
         }
-
+ 
         return (
             <div>
                 <SaveDialog ref={this._saveDialog} show={this.state.showSaveDialog} />
