@@ -57,6 +57,7 @@ export default class WebcamCapture extends Component {
         )
     }
 
+    //Keypressed management
     _keyPressed(event) {
         if (event.keyCode === 32) {
             PubSub.publish(WCEvents.NEW_SCREENSHOOT)
@@ -65,6 +66,15 @@ export default class WebcamCapture extends Component {
         }
     }
 
+    addKeydownListener() {
+        document.addEventListener("keydown", this._keyPressed, false);
+    }
+
+    removeKeydownListener() {
+        document.removeEventListener("keydown", this._keyPressed, false);
+    }
+
+    //Events mgmt
     subscribeSnapshot(msg, data) {
         if (msg === "") {
             return
@@ -80,7 +90,7 @@ export default class WebcamCapture extends Component {
         }
 
         //Actual saving is done by ScreenshootBar
-        this.setState({ showSaveDialog: false })
+        this.hideSaveDialog()
     }
 
     subscribeEnterPressed(msg, data) {
@@ -90,11 +100,23 @@ export default class WebcamCapture extends Component {
             return
         }
 
-        this.setState({ showSaveDialog: true })
+        this.showSaveDialog()
     }
 
-    componentDidMount() {
+    //SaveDialog
+    hideSaveDialog() {
+        this.setState({ showSaveDialog: false })
         document.addEventListener("keydown", this._keyPressed, false);
+    }
+
+    showSaveDialog() {
+        this.setState({ showSaveDialog: true })
+        document.removeEventListener("keydown", this._keyPressed, false);
+    }
+
+    //Lifecycle methods
+    componentDidMount() {
+        this.addKeydownListener()
 
         PubSub.subscribe(WCEvents.NEW_SCREENSHOOT, this.subscribeSnapshot.bind(this));
         PubSub.subscribe(WCEvents.SAVE, this.subscribeSave.bind(this));
@@ -105,6 +127,6 @@ export default class WebcamCapture extends Component {
     }
 
     componentWillUnmount() {
-        document.removeEventListener("keydown", this._keyPressed, false);
+        this.removeKeydownListener();
     }
 }
