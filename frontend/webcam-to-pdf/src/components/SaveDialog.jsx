@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { WCEvents } from '../misc/WCEvents.js'
 import PubSub from 'pubsub-js'
 import './SaveDialog.css'
+import { SaveDialogEvents } from '../misc/SaveDialogEvents.js'
 
 export default class SaveDialog extends Component {
     constructor(props) {
@@ -16,6 +17,41 @@ export default class SaveDialog extends Component {
 
     reset() {
         this.setState({[this.K_FILENAME] : ""})
+    }
+
+    keyPressed(event) {
+        if (event.keyCode === 13) {
+            PubSub.publish(SaveDialogEvents.ENTER_PRESSED)
+        } else if (event.keyCode === 27) {
+            PubSub.publish(SaveDialogEvents.ESC_PRESSED)
+        }
+    }
+
+    componentDidMount() {
+        this._enterPressedSubscriptionToken =  PubSub.subscribe(SaveDialogEvents.ENTER_PRESSED,this.subscribeEnterPressed.bind(this))
+        this._escPressedSubscriptionToken = PubSub.subscribe(SaveDialogEvents.ESC_PRESSED,this.subscribeEscPressed.bind(this))
+        this.subscribeEnterPressed("","")
+        this.subscribeEscPressed("","")
+    }
+
+    componentWillUnmount() {
+        PubSub.unsubscribe(this._enterPressedSubscriptionToken)
+        PubSub.unsubscribe(this._escPressedSubscriptionToken)
+    }
+
+    subscribeEnterPressed(msg,data) {
+        if (msg === "") {
+            return
+        }
+
+        this._save()
+    }
+
+    subscribeEscPressed(msg,data) {
+        if (msg === "") {
+            return
+        }
+        this._cancel()
     }
 
     render() {
@@ -49,6 +85,10 @@ export default class SaveDialog extends Component {
     }
 
     _save = () => {
+        if (this.state[this.K_FILENAME].trim() === "") {
+            return
+        }
+
         this._publish()
     }
 

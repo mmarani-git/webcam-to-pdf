@@ -62,7 +62,7 @@ export default class WebcamCapture extends Component {
         if (event.keyCode === 32) {
             PubSub.publish(WCEvents.NEW_SCREENSHOOT)
         } else if (event.keyCode === 13) {
-            PubSub.publish(WCEvents.ENTER_PRESSED)
+            PubSub.publish(WCEvents.SHOW_SAVE_DIALOG)
         }
     }
 
@@ -93,7 +93,7 @@ export default class WebcamCapture extends Component {
         this.hideSaveDialog()
     }
 
-    subscribeEnterPressed(msg, data) {
+    subscribeShowSaveDialog(msg, data) {
         if (msg === ""
             || this.state.showSaveDialog === true
             || this._screenshootBar.current.getScreenshoots().length === 0) {
@@ -107,26 +107,31 @@ export default class WebcamCapture extends Component {
     hideSaveDialog() {
         this.setState({ showSaveDialog: false })
         document.addEventListener("keydown", this._keyPressed, false);
+        document.removeEventListener("keydown", this._saveDialog.current.keyPressed, false);
     }
 
     showSaveDialog() {
         this.setState({ showSaveDialog: true })
         document.removeEventListener("keydown", this._keyPressed, false);
+        document.addEventListener("keydown", this._saveDialog.current.keyPressed, false);
     }
 
     //Lifecycle methods
     componentDidMount() {
         this.addKeydownListener()
 
-        PubSub.subscribe(WCEvents.NEW_SCREENSHOOT, this.subscribeSnapshot.bind(this));
-        PubSub.subscribe(WCEvents.SAVE, this.subscribeSave.bind(this));
-        PubSub.subscribe(WCEvents.ENTER_PRESSED, this.subscribeEnterPressed.bind(this));
+        this._snapshotSubscriptionToken = PubSub.subscribe(WCEvents.NEW_SCREENSHOOT, this.subscribeSnapshot.bind(this));
+        this._saveSubscriptionToken = PubSub.subscribe(WCEvents.SAVE, this.subscribeSave.bind(this));
+        this._showSaveDialogSubscriptionToken = PubSub.subscribe(WCEvents.SHOW_SAVE_DIALOG, this.subscribeShowSaveDialog.bind(this));
         this.subscribeSnapshot("", "")
         this.subscribeSave("", "")
-        this.subscribeEnterPressed("", "")
+        this.subscribeShowSaveDialog("", "")
     }
 
     componentWillUnmount() {
         this.removeKeydownListener();
+        PubSub.unsubscribe(this._snapshotSubscriptionToken)
+        PubSub.unsubscribe(this._saveSubscriptionToken)
+        PubSub.unsubscribe(this._showSaveDialogSubscriptionToken)
     }
 }
