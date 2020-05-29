@@ -21,7 +21,7 @@ export default class WebcamCapture extends Component {
         this._saveDialog = React.createRef();
     }
 
-    willShowSaveDialog() {
+    willShowSaveDialog = () => {
         return this.state.showSaveDialog === true 
             && this._saveDialog !== undefined
             && this._saveDialog !== null
@@ -58,10 +58,6 @@ export default class WebcamCapture extends Component {
     }
 
     _keyPressed(event) {
-        if (this._processing) {
-            return;
-        }
-
         if (event.keyCode === 32) {
             PubSub.publish(WCEvents.NEW_SCREENSHOOT)
         } else if (event.keyCode === 13) {
@@ -74,10 +70,8 @@ export default class WebcamCapture extends Component {
             return
         }
 
-        this._processing = true;
         let image = this._webcam.current.getScreenshot();
         this._filterPane.current.addScreenshoot(image)
-        this._processing = false;
     }
 
     subscribeSave(msg, data) {
