@@ -5,6 +5,10 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
+    z-index: 9999
+}
+
+.maxZIndex {
     z-index: 10000
 }
 
@@ -16,9 +20,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    text-align: center;
 }
 
 .inputBox {
+    margin: 0 auto;
+    text-align: center;
     width: 100%;
     padding: 10px;
     border: 1px;

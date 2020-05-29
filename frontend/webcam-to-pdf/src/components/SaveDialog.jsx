@@ -28,7 +28,8 @@ export default class SaveDialog extends Component {
                         File name:
                     </div>
                     <div className="inputBox">
-                        <input className="inputBox"
+                        <input className="inputBox maxZIndex"
+                            ref={input => input && input.focus()} 
                             type="text"
                             name={this.K_FILENAME}
                             value={this.state[this.K_FILENAME]}
