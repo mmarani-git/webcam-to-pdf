@@ -18,12 +18,25 @@ export default class WebcamCapture extends Component {
         this._webcam = React.createRef()
         this._screenshootBar = React.createRef()
         this._filterPane = React.createRef();
+        this._saveDialog = React.createRef();
+    }
+
+    willShowSaveDialog() {
+        return this.state.showSaveDialog === true 
+            && this._saveDialog !== undefined
+            && this._saveDialog !== null
+            && this._saveDialog.current !== undefined
+            && this._saveDialog.current !== null
     }
 
     render() {
+        if (this.willShowSaveDialog()) {
+            this._saveDialog.current.reset()
+        }
+
         return (
             <div>
-                <SaveDialog show={this.state.showSaveDialog} />
+                <SaveDialog ref={this._saveDialog} show={this.state.showSaveDialog} />
                 <div className="row">
                     <div className="width50">
                         <Webcam id="webcam"

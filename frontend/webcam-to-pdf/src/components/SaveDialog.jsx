@@ -14,6 +14,10 @@ export default class SaveDialog extends Component {
         }
     }
 
+    reset() {
+        this.setState({[this.K_FILENAME] : ""})
+    }
+
     render() {
         this._showHideClassName = this.props.show ? "wcmodal display-block" : "wcmodal display-none";
 
