@@ -34,6 +34,9 @@ export default class WebcamCapture extends Component {
             this._saveDialog.current.reset()
         }
  
+        this._deviceId = this.props.location.state.deviceId
+        this._imageFormat = this.props.location.state.imageFormat
+
         return (
             <div>
                 <SaveDialog ref={this._saveDialog} show={this.state.showSaveDialog} />
@@ -42,10 +45,10 @@ export default class WebcamCapture extends Component {
                         <Webcam id="webcam"
                             ref={this._webcam}
                             forceScreenshotSourceSize="true"
-                            screenshotFormat="image/png"
+                            screenshotFormat={this._imageFormat}
                             audio={false}
                             videoConstraints={{
-                                deviceId: this.props.match.params.deviceId,
+                                deviceId: this._deviceId,
                                 width: { ideal: 10000 },
                                 height: { ideal: 10000 }
                             }} />

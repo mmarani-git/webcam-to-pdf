@@ -41,6 +41,7 @@ export default class ScreenshootBar extends Component {
         if (msg==="") {
             return;
         }
+        
         this.addScreenshoot(data.image)
     }
 

@@ -18,6 +18,12 @@ class ImageService {
             return Math.round(parseFloat(dimension.w) * parseFloat(wantedHeight) / parseFloat(dimension.h));
         })
     }
+
+    getMimeType(base64) {
+        let start = base64.indexOf("/")
+        let end = base64.indexOf(";")
+        return "image" + base64.substring(start,end)
+    }
 }
 
 export default new ImageService()

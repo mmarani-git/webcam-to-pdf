@@ -106,7 +106,7 @@ export default class FilterPane extends Component {
             canvas.height=img.height
             ctx.filter = filters
             ctx.drawImage(img,0,0)
-            PubSub.publish(WCEvents.SCREENSHOOT_FILTERED, {image: canvas.toDataURL()})
+            PubSub.publish(WCEvents.SCREENSHOOT_FILTERED, {image: canvas.toDataURL(ImageService.getMimeType(img.src))})
         }
         img.src = this.state.image
     }

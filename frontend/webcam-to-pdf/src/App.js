@@ -12,7 +12,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={WebcamChooser} />
-          <Route path="/capture/:deviceId" component={WebcamCapture} />
+          <Route path="/capture" component={WebcamCapture} />
 
           <Route component={BadRouteComponent} />
           <WebcamChooser />

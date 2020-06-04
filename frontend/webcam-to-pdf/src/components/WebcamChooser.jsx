@@ -7,7 +7,8 @@ export default class WebcamChooser extends Component {
         super(props)
         this.state = {
             selectedDeviceId: "",
-            devices: []
+            devices: [],
+            imageFormat: 'jpeg'
         }
     }
 
@@ -19,12 +20,43 @@ export default class WebcamChooser extends Component {
         );
     }
 
+    _changeImageFormat = (event) => {
+        this.setState({imageFormat: event.target.value})
+    }
+
     render() {
+        const inputStyle = {
+            margin: 10
+        }
         return (
             <>
-            { this.state.devices.map((device, key) => (
-                  <WebcamRow device={device} key={key} />
-              )) }
+                <div>
+                    <label>
+                        <input
+                            type="radio"
+                            name="imageFormat"
+                            value="png"
+                            checked={this.state.imageFormat === "png"}
+                            onChange={this._changeImageFormat}
+                            style={inputStyle}
+                        />
+                    PNG
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="imageFormat"
+                            value="jpeg"
+                            checked={this.state.imageFormat === "jpeg"}
+                            onChange={this._changeImageFormat}
+                            style={inputStyle}
+                        />
+                    JPEG
+                    </label>
+                </div>
+                {this.state.devices.map((device, key) => (
+                    <WebcamRow device={device} key={key} imageFormat={this.state.imageFormat} />
+                ))}
             </>
         )
     }
@@ -38,9 +70,15 @@ class WebcamRow extends Component {
 
     render() {
         return (
-            <Link to={"/capture/"+this.props.device.deviceId}>
+            <Link to={{ 
+                pathname: "/capture", 
+                state: { 
+                    deviceId: this.props.device.deviceId,
+                    imageFormat: "image/"+this.props.imageFormat
+                    } 
+                }}>
                 <Webcam audio={false} videoConstraints={{ deviceId: this.props.device.deviceId }} />
-                <p>{ this.props.device.label}</p>
+                <p>{this.props.device.label}</p>
             </Link>
         )
     }

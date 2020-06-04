@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.itextpdf.text.Document;
@@ -30,9 +31,12 @@ public class PdfService {
 	
 	@Autowired
 	private WorkDir workDir;
-
+	
+	@Value("${deleteImmediately}")
+	private boolean deleteImmediately;
+	
 	public File createPdf(List<String> pagesBase64, String fileName) {
-		List<File> images = pagesBase64.stream().map(base64 -> base64ToFile(base64, "png")).collect(Collectors.toList());
+		List<File> images = pagesBase64.stream().map(base64 -> base64ToFile(base64)).collect(Collectors.toList());
 		File outputFile = new File(workDir.getOutputDir(), fileName);
 		
 		createPdf(images, outputFile);
@@ -59,7 +63,9 @@ public class PdfService {
 			image.setBorderWidth(0);
 			image.scaleToFit(PageSize.A4);
 			document.add(image);
-			imageFile.delete();
+			if (deleteImmediately) {
+				imageFile.delete();
+			}
 		} catch (Exception e) {
 			throw new PdfException(e);
 		}
@@ -112,7 +118,8 @@ public class PdfService {
 	    return dest;
 	}
 	
-	private File base64ToFile(String base64, String format) {
+	private File base64ToFile(String base64) {
+		String format = getFormat(base64);
 		try {
 			File file = File.createTempFile("webcam-to-pdf", "."+format, workDir.getTempDir());
 			file.deleteOnExit();
@@ -126,6 +133,12 @@ public class PdfService {
 		}
 	}
 	
+	String getFormat(String base64) {
+		int pos1 = base64.indexOf("/");
+		int pos2 = base64.indexOf(";");
+		return base64.substring(pos1+1, pos2);
+	}
+
 	String removeStringHeader(String base64) {
 		return base64.substring(base64.indexOf(",") + 1);
 	}

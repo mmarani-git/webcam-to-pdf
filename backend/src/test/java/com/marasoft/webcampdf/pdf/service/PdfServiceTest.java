@@ -63,4 +63,10 @@ public class PdfServiceTest {
 		
 		assertEquals(5, pdfReader.getNumberOfPages());		
 	}
+	
+	@Test
+	public void testGetFormat() {
+		String base64 = "data:image/png;base64,Uk";
+		assertEquals("png",pdfService.getFormat(base64));
+	}
 }
